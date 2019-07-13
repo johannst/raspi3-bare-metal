@@ -52,5 +52,7 @@ vpi3: kernel8.img
 	cp kernel8.img kernel8.elf vpi3/
 	make -C vpi3 run clean
 
+.PHONY: vpi3
+
 # vim:noet:ts=4
 
