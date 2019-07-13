@@ -1,0 +1,5 @@
+Raspberry Pi 3 memory map:
+
+0x3f215000   Global auxiliary peripheral config
+0x3f215040   Mini Uart (UART1)
+0x3f200000   GPIO registers
