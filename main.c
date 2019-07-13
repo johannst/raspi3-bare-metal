@@ -44,7 +44,7 @@ void miniUartInitialize() {
 void miniUartPutc(char c) {
 #define TX_IDLE 0x20
     while (!(MINI_UART.AUX_MU_LSR & TX_IDLE)) {
-       asm volatile("nop");
+        asm volatile("nop");
     }
     MINI_UART.AUX_MU_IO = c;
 }
@@ -52,7 +52,7 @@ void miniUartPutc(char c) {
 char miniUartGetc() {
 #define RX_READY 0x01
     while (!(MINI_UART.AUX_MU_LSR & RX_READY)) {
-       asm volatile("nop");
+        asm volatile("nop");
     }
     char r = (char)(MINI_UART.AUX_MU_IO);
     return r=='\r' ? '\n' : r;
@@ -68,9 +68,9 @@ void miniUartPuts(const char *s) {
 }
 
 int main() {
-   miniUartInitialize();
-   miniUartPuts("This works?\n");
-   return 0;
+    miniUartInitialize();
+    miniUartPuts("This works?\n");
+    return 0;
 }
 
 // vim:et:ts=4
