@@ -1,5 +1,7 @@
-// raspi3-bare-metal/Peripherals.h
-// johannst (c)
+//
+// raspi3-bare-metal - Toy project for personal education
+// Copright (C) 2019 Johannes Stoelp <johannes.stoelp@gmail.com>
+//
 
 #pragma once
 #include <stdint.h>
@@ -114,3 +116,4 @@ void setGpioPullResistor(int port, int pud) {
 }
 
 // vim:et:ts=4
+

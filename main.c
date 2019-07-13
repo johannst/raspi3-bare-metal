@@ -1,5 +1,7 @@
-// raspi3-bare-metal/main.c
-// johannst (c)
+//
+// raspi3-bare-metal - Toy project for personal education
+// Copright (C) 2019 Johannes Stoelp <johannes.stoelp@gmail.com>
+//
 
 #define RPI3
 #include "Peripherals.h"
@@ -72,3 +74,4 @@ int main() {
 }
 
 // vim:et:ts=4
+

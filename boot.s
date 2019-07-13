@@ -1,5 +1,7 @@
-// raspi3-bare-metal/boot.s
-// johannst (c)
+//
+// raspi3-bare-metal - Toy project for personal education
+// Copright (C) 2019 Johannes Stoelp <johannes.stoelp@gmail.com>
+//
 
 .section .text.boot , "x"
 _reset:
@@ -19,3 +21,4 @@ _get_cpu_id:
     ret
 
 // vim:et:ts=4
+

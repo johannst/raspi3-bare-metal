@@ -1,5 +1,7 @@
-# raspi3-bare-metal/Makefile
-# johannst (c)
+#
+# raspi3-bare-metal - Toy project for personal education
+# Copright (C) 2019 Johannes Stoelp <johannes.stoelp@gmail.com>
+#
 
 PREFIX := aarch64-elf-
 CC := $(PREFIX)gcc
