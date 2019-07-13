@@ -48,5 +48,9 @@ qemu:
 	@# -serial null -serial stdio    -> enable UART1
 	qemu-system-aarch64 $(QEMUFLAGS) -machine raspi3 -kernel kernel8.img -serial null -serial stdio
 
+vpi3: kernel8.img
+	cp kernel8.img kernel8.elf vpi3/
+	make -C vpi3 run clean
+
 # vim:noet:ts=4
 
