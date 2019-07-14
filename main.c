@@ -67,9 +67,110 @@ void miniUartPuts(const char *s) {
     }
 }
 
+const char hexchars[] = "0123456789abcdef";
+//#define hex2ascii(hex) hexchars[hex]
+char hex2ascii(uint8_t nibble) {
+    return hexchars[nibble];
+}
+
+void printx32(char* buf, uint32_t val) {
+    const int bytes = 4;
+
+    const int nibbles = 2*bytes;
+    for (int i=0; i<nibbles; ++i) {
+        buf[i] = hex2ascii(val >> 4*(nibbles-1-i) & 0x0f);
+    }
+    buf[2*bytes] = '\0';
+}
+
+void printx64(char* buf, uint64_t val) {
+    const int bytes = 8;
+
+    const int nibbles = 2*bytes;
+    for (int i=0; i<nibbles; ++i) {
+        buf[i] = hex2ascii(val >> 4*(nibbles-1-i) & 0x0f);
+    }
+    buf[2*bytes] = '\0';
+}
+
+// {{{ Atag
+
+struct AtagHeader {
+    uint32_t size;
+    uint32_t tag;
+};
+
+struct AtagCore {
+    uint32_t flags;
+    uint32_t pagesize;
+    uint32_t rootdev;
+};
+
+struct AtagMem {
+    uint32_t size;
+    uint32_t start;
+};
+
+struct AtagEntry {
+    struct AtagHeader hdr;
+    union {
+        struct AtagCore core;
+        struct AtagMem mem;
+    };
+};
+
+enum eAtagType {
+    ATAG_NONE = 0x00000000,
+    ATAG_CORE = 0x54410001,
+    ATAG_MEM  = 0x54410002,
+};
+
+void walkAtags(void* start_addr) {
+    struct AtagEntry* atag = (struct AtagEntry*)start_addr;
+
+    while (atag->hdr.tag != ATAG_NONE) {
+        miniUartPuts("Found ATAG tag=");
+        switch (atag->hdr.tag) {
+            case ATAG_CORE:
+                miniUartPuts("ATAG_CORE\n");
+                break;
+            case ATAG_MEM:
+                miniUartPuts("ATAG_MEM\n");
+                {
+                    miniUartPuts("start=");
+                    char buf[10];
+                    printx32(buf, atag->mem.start);
+                    miniUartPuts(buf);
+                    miniUartPuts(" size=");
+                    printx32(buf, atag->mem.size);
+                    miniUartPuts(buf);
+                    miniUartPuts("\n");
+                }
+                break;
+            default:
+                {
+                    char buf[10];
+                    printx32(buf, atag->hdr.tag);
+                    miniUartPuts(buf);
+                    miniUartPuts(" (unknown)\n");
+                }
+                break;
+        }
+
+        atag = (struct AtagEntry*)((uint32_t*)(atag) + atag->hdr.size);
+    }
+}
+
+// }}}
+
+
 int main() {
     miniUartInitialize();
     miniUartPuts("This works?\n");
+
+    // at boot x0 will hold the ATAG addr
+    walkAtags((void*)0x100);
+
     return 0;
 }
 
