@@ -31,5 +31,10 @@ To create a container simply run:
 > docker run -it --rm rpi3devbox
 ```
 
+To additionally map a serial device from the host pc into the container:
+```
+docker run --device=/dev/ttyUSB0 --cap-add=SYS_ADMIN -it --rm rpi3devbox
+```
+
 [//]: # vim:colorcolumn=80:textwidth=80:expandtab:shiftwidth=2:softtabstop=2:
 

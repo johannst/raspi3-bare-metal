@@ -21,6 +21,7 @@ RUN set -ex;                                \
         git                                 \
         vim                                 \
         tmux                                \
+        minicom                             \
         # for qemu
         pkg-config                          \
         libglib2.0-dev                      \
