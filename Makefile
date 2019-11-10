@@ -26,6 +26,20 @@ ifdef GDB
    QEMUFLAGS = -S -gdb tcp::1234
 endif
 
+default: kernel8.img
+
+help:
+	@echo "Targets:"
+	@echo " kernel8.img .... (default) build the kernel image binary + ELF."
+	@echo " qemu [GDB=1] ... run the kernel image with QEMU with UART1 on stdio."
+	@echo "                  GDB=1 enable gdbserver in QEMU and freeze CPU until debugger attached."
+	@echo " vpi3 ........... Start a virtual raspberry pi3 debug environment."
+	@echo "                  This creates a tmux session with 4 splits:"
+	@echo "                    - QEMU running the kernel"
+	@echo "                    - Uart0 (ARM PL011)"
+	@echo "                    - Uart1 (MiniUart)"
+	@echo "                    - GDB attached to QEMU"
+
 kernel8.img: kernel8.elf
 	$(OC) -O binary $^ $@
 
