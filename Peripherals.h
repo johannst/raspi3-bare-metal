@@ -52,7 +52,8 @@ struct GpioRegs {
    uint32_t GPPUDCLK[2]; // Pin Pull-up/down Enable Clock 0-1 [R/W]
 };
 
-enum GpioFuncDecls {
+typedef enum {
+
    IO_FUNC_IN   = 0x00,
    IO_FUNC_OUT  = 0x01,
    IO_FUNC_ALT0 = 0x04,
@@ -61,13 +62,13 @@ enum GpioFuncDecls {
    IO_FUNC_ALT3 = 0x07,
    IO_FUNC_ALT4 = 0x03,
    IO_FUNC_ALT5 = 0x02,
-};
+} GpioFunc;
 
-enum GpioPullResistorDecls {
+typedef enum {
    IO_PUD_OFF  = 0x00,
    IO_PUD_DOWN = 0x01,
    IO_PUD_UP   = 0x02,
-};
+} GpioPullResistor;
 
 #ifdef RPI3
 # define PERIPH_BASE 0x3F000000
@@ -87,7 +88,7 @@ enum GpioPullResistorDecls {
 //    GPFSEL0 [31:30] - Reserved
 //    GPFSEL1 [2:0] - Function Select GPIO10
 //    ...
-void setGpioFunction(int port, int func) {
+void setGpioFunction(int port, GpioFunc func) {
    int port_sel = port/10;
    int port_index = 3*(port%10);
 
@@ -97,13 +98,15 @@ void setGpioFunction(int port, int func) {
    GPIO.GPFSEL[port_sel];
 }
 
-// 1. Wirte PullUp/Down config to GPPUD.
-// 2. Wait 150 cycles -> set-up time for the control signal
-// 3. Enable GPIO clock(s) GPPUDCLK for the pads that should be affected by the config in GPPUD.
-// 4. Wait 150 cycles -> hold time for the control signal
-// 5. Reset GPPUD.
-// 6. Disable GPIO clock(s).
-void setGpioPullResistor(int port, int pud) {
+// Protocol to change GPPUD:
+//   1. Wirte PullUp/Down config to GPPUD.
+//   2. Wait 150 cycles -> set-up time for the control signal
+//   3. Enable GPIO clock(s) GPPUDCLK for the pads that should be affected by
+//      the config in GPPUD.
+//   4. Wait 150 cycles -> hold time for the control signal
+//   5. Reset GPPUD.
+//   6. Disable GPIO clock(s).
+void setGpioPullResistor(int port, GpioPullResistor pud) {
    int port_sel = port/32;
    int port_index = (port%32);
 
