@@ -13,6 +13,7 @@ RUN set -ex;                                \
     apt-get update;                         \
     apt-get upgrade -y;                     \
     apt-get install -y                      \
+        zsh                                 \
         wget                                \
         xz-utils                            \
         build-essential                     \
@@ -42,7 +43,7 @@ RUN set -ex;                                                                    
         https://releases.linaro.org/components/toolchain/binaries/latest-7/aarch64-elf/${GCC_PKG}.tar.xz;   \
     tar xf ${GCC_PKG}.tar.xz;                                                                               \
     rm -f ${GCC_PKG}.tar.xz;                                                                                \
-    echo "PATH=/pidev/toolchain/${GCC_PKG}/bin:\$PATH" >> ~/.bashrc;                                        \
+    echo "PATH=/pidev/toolchain/${GCC_PKG}/bin:\$PATH" >> ~/.zshrc;                                         \
     cd ..
 
 # build qemu to get raspi3 machine
@@ -56,17 +57,21 @@ RUN set -ex;                                                                \
     rm -rf qemu
 
 RUN set -ex;                                                                \
+    echo "TERM=xterm-256color" >> ~/.zshrc;                                 \
     git clone https://github.com/johannst/dotfiles;                         \
     cd dotfiles;                                                            \
-    sed -i 's/n - \(gitconfig\)/y - \1/' install.config;                    \
-    sed -i 's/n - \(gdb\)/y - \1/' install.config;                          \
+    echo 'y - gdb' > install.config;                                        \
+    echo 'y - gitconfig' >> install.config;                                 \
+    echo 'y - tmux.conf' >> install.config;                                 \
+    echo 'y - zshrc' >> install.config;                                     \
+    echo 'y - vimrc' >> install.config;                                     \
     ./install -y;                                                           \
     cd ..
 
 RUN set -ex;                                                                \
     git clone https://github.com/johannst/raspi3-bare-metal
 
-CMD cd raspi3-bare-metal && git pull; /bin/bash -l
+CMD cd raspi3-bare-metal && git pull; /bin/zsh -l
 
 # vim:expandtab
 
