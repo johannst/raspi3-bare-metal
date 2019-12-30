@@ -34,16 +34,17 @@ RUN set -ex;                                \
     apt-get clean -y;                       \
     rm -rf /var/lib/apt/lists/*
 
-RUN set -ex;                                                                                                \
-    mkdir toolchain;                                                                                        \
-    cd toolchain;                                                                                           \
-    GCC_PKG=gcc-linaro-7.4.1-2019.02-x86_64_aarch64-elf;                                                    \
+RUN set -ex;                                                                                                    \
+    mkdir toolchain;                                                                                            \
+    cd toolchain;                                                                                               \
+    LINARO_REL=7.5-2019.12;                                                                                     \
+    GCC_PKG=gcc-linaro-7.5.0-2019.12-x86_64_aarch64-elf;                                                        \
     # giga one '.' per 1MB
-    wget --progress=dot:giga                                                                                \
-        https://releases.linaro.org/components/toolchain/binaries/latest-7/aarch64-elf/${GCC_PKG}.tar.xz;   \
-    tar xf ${GCC_PKG}.tar.xz;                                                                               \
-    rm -f ${GCC_PKG}.tar.xz;                                                                                \
-    echo "PATH=/pidev/toolchain/${GCC_PKG}/bin:\$PATH" >> ~/.zshrc;                                         \
+    wget --progress=dot:giga                                                                                    \
+        https://releases.linaro.org/components/toolchain/binaries/${LINARO_REL}/aarch64-elf/${GCC_PKG}.tar.xz;  \
+    tar xf ${GCC_PKG}.tar.xz;                                                                                   \
+    rm -f ${GCC_PKG}.tar.xz;                                                                                    \
+    echo "PATH=/pidev/toolchain/${GCC_PKG}/bin:\$PATH" >> ~/.zshrc;                                             \
     cd ..
 
 # build qemu to get raspi3 machine
