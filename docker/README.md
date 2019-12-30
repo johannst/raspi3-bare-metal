@@ -25,14 +25,14 @@ rpi3devbox          latest              1136c6fce8a7        25 minutes ago      
 ### Running the image
 
 To create a container instance simply run:
-```
+```bash
 # -it   interactive with pseudo tty
 # --rm  remove container after exiting (oneshot)
-> docker run -it [--rm] rpi3devbox
+docker run -it [--rm] rpi3devbox
 ```
 
 To additionally map a serial device from the host pc into the container:
-```
+```bash
 docker run --device=/dev/ttyUSB0 --cap-add=SYS_ADMIN -it --rm rpi3devbox
 ```
 
